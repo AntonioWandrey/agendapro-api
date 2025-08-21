@@ -13,17 +13,15 @@ export default class AgendamentoController {
     const { data, hora_inicio, servicoId, funcionarioId, clienteId } = req.body;
 
     if (!data || !hora_inicio || !servicoId || !funcionarioId || !clienteId) {
-      return res.status(400).json({ message: "Todos os campos são obrigatórios para o agendamento." });
+      return res.status(400).json({ message: "Todos os campos são obrigatórios." });
     }
 
     try {
-      // 1. Busca o serviço no banco para saber sua duração
       const servico = await Servico.findByPk(servicoId);
       if (!servico) {
         return res.status(404).json({ message: "Serviço não encontrado." });
       }
 
-      // 2. Calcula a hora de término
       const [horas, minutos] = hora_inicio.split(':').map(Number);
       const dataInicio = new Date();
       dataInicio.setHours(horas, minutos, 0, 0);
@@ -31,7 +29,6 @@ export default class AgendamentoController {
       const dataFim = new Date(dataInicio.getTime() + servico.duracao_em_minutos * 60000);
       const hora_fim = dataFim.toTimeString().substring(0, 8);
 
-      // 3. Cria o agendamento no banco de dados
       const novoAgendamento = await Agendamento.create({
         data,
         hora_inicio,
@@ -53,12 +50,10 @@ export default class AgendamentoController {
   // Rota: GET /agendamentos
   static async listarTodosAgendamentos(req: Request, res: Response) {
     try {
-      // O 'include' é a parte mais importante aqui!
-      // Ele traz os dados dos modelos relacionados junto com o agendamento.
       const agendamentos = await Agendamento.findAll({
         include: [
           { model: Servico },
-          { model: User, as: 'funcionario' }, // Usamos o 'as' que definimos no Model
+          { model: User, as: 'funcionario' },
           { model: User, as: 'cliente' }
         ]
       });

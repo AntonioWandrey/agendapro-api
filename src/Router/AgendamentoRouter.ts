@@ -15,6 +15,6 @@ router.post("/", cors(corsOptions), AgendamentoController.criarNovoAgendamento);
 // Ex: GET http://localhost:6592/agendamentos/
 router.get("/", cors(corsOptions), AgendamentoController.listarTodosAgendamentos);
 
-// Futuramente, adicionaremos as rotas de GET (por ID), PUT e DELETE aqui...
+// Futuramente, rotas de GET (por ID), PUT e DELETE aqui...
 
 export default router;

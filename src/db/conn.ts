@@ -1,4 +1,4 @@
-// src/Db/conn.ts - VERSÃO ATUALIZADA COM O MODELO AGENDAMENTO
+// src/Db/conn.ts - VERSÃO ATUALIZADA
 
 import { Sequelize } from "sequelize-typescript";
 import { User } from "../Model/User";

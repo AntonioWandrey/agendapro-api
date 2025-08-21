@@ -1,12 +1,14 @@
-// App.ts
+// App.ts - VERSÃO FINAL E COMPLETA
+
 import express, { Application, urlencoded } from "express";
 import http, { Server } from "http";
 import cors from "cors";
-import UserRouter from "./Router/UserRouter";
-import sequelize from "./db/conn";
-import ServicoRouter from "./Router/ServicoRouter";
-import AgendamentoRouter from "./Router/AgendamentoRouter";
+import sequelize from "./Db/conn";
 
+// Nossos Routers
+import UserRouter from "./Router/UserRouter";
+import ServicoRouter from "./Router/ServicoRouter";
+import AgendamentoRouter from "./Router/AgendamentoRouter"; // <-- Import que faltava
 
 export default class App {
   public app: Application;
@@ -43,7 +45,7 @@ export default class App {
   public RouteMiddleWare() {
     this.app.use("/user", UserRouter);
     this.app.use("/servicos", ServicoRouter);
-    this.app.use("/agendamentos", AgendamentoRouter);
+    this.app.use("/agendamentos", AgendamentoRouter); // <-- Linha que faltava
   }
 
 
@@ -52,8 +54,9 @@ export default class App {
       console.log("Conectando ao banco...");
       await sequelize.sync({ alter: true });
       this.app.listen(6592, () => {
-        console.log("Conectou ao banco de dados");
-        console.log("Servidor funcionando na porta 5432");
+        // Log dinâmico que corrigimos
+        console.log(`Conectou ao banco de dados: ${sequelize.getDatabaseName()}`);
+        console.log("Servidor funcionando na porta 6592");
       });
     } catch (e) {
       console.log(e);

@@ -11,13 +11,13 @@ import { Servico } from './Servico';
 export class Agendamento extends Model {
 
   @Column({
-    type: DataType.DATEONLY, // Armazena apenas a data (YYYY-MM-DD)
+    type: DataType.DATEONLY, // Armazena apenas a data: "2025-08-20"
     allowNull: false,
   })
   data!: string;
 
   @Column({
-    type: DataType.TIME, // Armazena apenas a hora (HH:MM:SS)
+    type: DataType.TIME, // Armazena apenas a hora: "14:30:00"
     allowNull: false,
   })
   hora_inicio!: string;
@@ -31,12 +31,11 @@ export class Agendamento extends Model {
   @Column({
     type: DataType.STRING,
     allowNull: false,
-    defaultValue: 'Marcado', // Ex: Marcado, Concluído, Cancelado
+    defaultValue: 'Marcado', // Valores podem ser: Marcado, Concluído, Cancelado, etc.
   })
   status!: string;
 
-  // --- RELACIONAMENTOS (CHAVES ESTRANGEIRAS) ---
-
+  // --- Relacionamento com a tabela 'servicos' ---
   @ForeignKey(() => Servico)
   @Column({
     type: DataType.INTEGER,
@@ -47,7 +46,7 @@ export class Agendamento extends Model {
   @BelongsTo(() => Servico)
   servico!: Servico;
 
-
+  // --- Relacionamento com a tabela 'Users' (para o funcionário) ---
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
@@ -55,11 +54,10 @@ export class Agendamento extends Model {
   })
   funcionarioId!: number;
 
-  // Criamos um "apelido" para a associação, para não confundir com o cliente
   @BelongsTo(() => User, 'funcionarioId')
   funcionario!: User;
 
-
+  // --- Relacionamento com a tabela 'Users' (para o cliente) ---
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
