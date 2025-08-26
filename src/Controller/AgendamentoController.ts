@@ -62,4 +62,24 @@ export default class AgendamentoController {
       return res.status(500).json({ message: "Erro ao listar agendamentos.", error: error.message });
     }
   }
+
+  // --- NOVO MÉTODO PARA VERIFICAR DISPONIBILIDADE ---
+static async verificarDisponibilidade(req: Request, res: Response) {
+  const { data, servicoId, funcionarioId } = req.body;
+
+  if (!data || !servicoId || !funcionarioId) {
+    return res.status(400).json({ message: "Data, serviço e funcionário são obrigatórios para verificar a disponibilidade." });
+  }
+
+  try {
+    // --- A LÓGICA COMPLEXA DE CÁLCULO ENTRARÁ AQUI ---
+    // Por enquanto, vamos retornar uma lista fixa para testar a rota.
+    const horariosDisponiveis = ["09:00", "10:30", "11:00", "14:00"];
+
+    return res.status(200).json(horariosDisponiveis);
+
+  } catch (error: any) {
+    return res.status(500).json({ message: "Erro ao verificar disponibilidade.", error: error.message });
+  }
+}
 }

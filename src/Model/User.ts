@@ -89,6 +89,20 @@ export class User extends Model<User> {
   @Column({ type: DataType.STRING, defaultValue: 'Ativo' })
   status!: string;
 
+  // --- NOVOS CAMPOS ADICIONADOS ---
+  @Column({
+    type: DataType.TIME, // Armazena apenas a hora, ex: "09:00:00"
+    allowNull: true,     // Opcional, nem todo usuário precisa ter (ex: clientes)
+  })
+  horario_inicio?: string;
+
+  @Column({
+    type: DataType.TIME,
+    allowNull: true,
+  })
+  horario_fim?: string;
+
+
   @CreatedAt
   @Column({ type: DataType.DATE })
   createdAt?: Date;
@@ -97,7 +111,6 @@ export class User extends Model<User> {
   @Column({ type: DataType.DATE })
   updatedAt?: Date;
 
-  // --- "GANCHO" PARA CRIPTOGRAFAR SENHA ANTES DE ATUALIZAR ---
   @BeforeUpdate
   static async hashPasswordOnUpdate(instance: User) {
     if (instance.changed('senha')) {

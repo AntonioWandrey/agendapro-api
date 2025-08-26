@@ -137,3 +137,9 @@ dist
 
 # SvelteKit build / generate output
 .svelte-kit
+
+# Dependências
+/node_modules
+
+# Arquivos de Sistema
+.DS_Store

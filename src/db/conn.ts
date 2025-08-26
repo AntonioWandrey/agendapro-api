@@ -4,7 +4,7 @@ import { Sequelize } from "sequelize-typescript";
 import { User } from "../Model/User";
 import LoginLog from "../Model/LoginLog";
 import { Servico } from "../Model/Servico";
-import { Agendamento } from "../Model/Agendamento"; 
+import { Agendamento } from "../Model/Agendamento";
 
 const sequelize = new Sequelize({
     dialect: 'postgres',
@@ -19,7 +19,7 @@ const sequelize = new Sequelize({
       Servico,
       Agendamento
     ],
-    logging: console.log,
+    logging: false,
 });
 
 export default sequelize;
