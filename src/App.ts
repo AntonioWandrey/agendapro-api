@@ -1,14 +1,15 @@
-// App.ts - VERSÃO FINAL E COMPLETA
+// App.ts - Configuração do servidor Express
 
-import express, { Application, urlencoded } from "express";
-import http, { Server } from "http";
-import cors from "cors";
+import express, { Application, urlencoded } from "express"; // Importando express e urlencoded
+import http, { Server } from "http"; // Importando http e Server
+import cors from "cors"; // Importando cors
+// Importando a conexão com o banco de dados
 import sequelize from "./Db/conn";
 
 // Nossos Routers
-import UserRouter from "./Router/UserRouter";
-import ServicoRouter from "./Router/ServicoRouter";
-import AgendamentoRouter from "./Router/AgendamentoRouter"; // <-- Import que faltava
+import UserRouter from "./Router/UserRouter"; // Importando UserRouter
+import ServicoRouter from "./Router/ServicoRouter"; // Importando ServicoRouter
+import AgendamentoRouter from "./Router/AgendamentoRouter"; // Importando AgendamentoRouter
 
 export default class App {
   public app: Application;

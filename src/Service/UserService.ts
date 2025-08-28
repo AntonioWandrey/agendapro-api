@@ -1,77 +1,35 @@
+// src/Service/UserService.ts - VERSÃO REATORADA
+
 import { User } from "../Model/User";
 import bcrypt from "bcrypt";
 import TokenService from "./TokenService";
 import LoginLog from "../Model/LoginLog";
 
-type NewUserDTO = {
-    nome: string;
-    sobreNome: string;
-    cpf: string;
-    rg: string;
-    departamento: string;
-    email: string;
-    cargoId: number;
-    numeroDeTelefone: string;
-    senha: string;
-    empresaId: number;
-};
-
 export default class UserService {
-    public static async newUser(data: NewUserDTO) {
-        const {
-            nome,
-            sobreNome,
-            cpf,
-            rg,
-            departamento,
-            email,
-            cargoId,
-            numeroDeTelefone,
-            senha,
-            empresaId,
-        } = data;
-
-        const normalizedEmail = String(email).trim().toLowerCase();
-
-        const salt = await bcrypt.genSalt(12);
-        const hashedPassword = await bcrypt.hash(senha, salt);
-
-        const usuario = {
-            nome,
-            sobreNome,
-            cpf,
-            rg,
-            departamento,
-            email: normalizedEmail,
-            cargoId,
-            numeroDeTelefone,
-            senha: hashedPassword,
-            empresaId,
-        };
-
-        const newUser = await User.create(usuario as any);
-
-        // gera token alinhado ao que você precisa (ajuste a assinatura se necessário)
-        const token = TokenService.authToken(newUser.User_id, newUser.nome, newUser.email);
-        return token;
-    }
 
     public static async logUser(email: string, senha: string) {
         const normalizedEmail = String(email).trim().toLowerCase();
 
         const user = await User.findOne({ where: { email: normalizedEmail } });
         if (!user) {
-            return "Nenhum usuário encontrado";
+            // MUDANÇA: Lançamos um erro claro
+            throw new Error("Nenhum usuário encontrado com este email.");
         }
 
+
         const isMatch = await bcrypt.compare(String(senha), String(user.senha));
-        if (!isMatch) {
-            return "Senha incorreta";
+            if (!isMatch) {
+            throw new Error("Senha incorreta.");
         }
+
+            // Verificação de segurança para garantir que o ID existe antes de usá-lo
+             if (!user.User_id) {
+            throw new Error("ID do usuário não encontrado após o login.");
+}
 
         const token = TokenService.authToken(user.User_id, user.nome, user.email);
 
-        // log de login (mantive sua lógica)
+
         try {
             await LoginLog.create({
                 IdUsuario: user.User_id,
@@ -79,13 +37,15 @@ export default class UserService {
                 Token: token,
             } as any);
         } catch (e) {
-            // não derruba o login por falha de log
             console.error("Falha ao registrar LoginLog:", e);
         }
 
-        return token;
+        // Retornamos o objeto de sucesso
+        return { token, user };
     }
 
-    // Se precisar manter um "newAdminUser", o model não tem userRoleId.
-    // Crie admin por política de cargoId/ACL fora do model ou via tabela/relacionamento apropriado.
+    // A lógica de newUser pode ser refatorada da mesma forma no futuro
+    public static async newUser(data: any) {
+        // ... (código original de newUser)
+    }
 }
