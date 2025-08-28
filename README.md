@@ -34,8 +34,8 @@ Instruções para configurar e rodar a API em uma nova máquina.
 2.  **Clonar o repositório:**
 
     ```bash
-    git clone <URL_DO_SEU_REPO_DA_API>
-    cd <nome-da-pasta-da-api>
+    git clone (https://github.com/AntonioWandrey/agendapro-api)
+    cd agendapro-api
     ```
 
 3.  **Instalar as dependências:**
